@@ -8,11 +8,43 @@ import furhatos.nlu.common.*
 val Start = state(Interaction) {
     onEntry {
         random(
-            {   furhat.say("Hi there") },
-            {   furhat.say("Oh, hello there") }
+            {   furhat.say("Hello, I am your Math Tutor") },
+            {   furhat.say("Oh, hello there. I am your math tutor") }
         )
 
-        goto(TakingOrder)
+        goto(Confidence)
+    }
+}
+
+val Confidence = state() {
+    onEntry {
+        furhat.ask("Are you confident in your math skills?")
+    }
+
+    onResponse<Yes> {
+        furhat.say("Great! Let's put your skills to the test.")
+        goto(Knowledge)
+    }
+
+    onResponse<No> {
+        furhat.say("Okay, we can take things slowly.")
+        goto(Knowledge)
+    }
+}
+
+val Knowledge = state() {
+    onEntry {
+        furhat.ask("Before we start, do you know how to compute fractions?")
+    }
+
+    onResponse<Yes> {
+        furhat.say("Great! Then let's jump into some exercises")
+        goto(Idle)
+    }
+
+    onResponse<No> {
+        furhat.say("Okay, then let's begin with an overview of how to compute fractions")
+        goto(Idle)
     }
 }
 
@@ -37,20 +69,6 @@ val Options = state(Interaction) {
                 { furhat.ask("What kind of fruit do you want?") },
                 { furhat.ask("What type of fruit?") }
         )
-    }
-}
-
-val TakingOrder = state(Options) {
-    onEntry {
-        random(
-            { furhat.ask("How about some fruits?") },
-            { furhat.ask("Do you want some fruits?") }
-        )
-    }
-
-    onResponse<No> {
-        furhat.say("Okay, that's a shame. Have a splendid day!")
-        goto(Idle)
     }
 }
 
