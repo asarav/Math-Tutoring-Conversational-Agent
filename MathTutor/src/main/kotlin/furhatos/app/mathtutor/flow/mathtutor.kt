@@ -67,11 +67,11 @@ val IntroductionState : State = state(Interaction) {
 
 val Explanation1 : State = state(Interaction) {
     onEntry {
-        furhat.ask("Division is a method of distributing a group of things into equal parts. It is one of the four basic operations of arithmetic, which gives a fair result of sharing."
-        +delay(1000) // Pausing for 2000 ms
-                + "I'll give you an example: Imagine there are are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?"
-        +delay(3000)
-        + "The question is: what is 12 chocolates divided by 3 friends? The answer is: They get 4 each. So 12 divided by 3 is 4.Do you understand this?")
+        furhat.say("Division is a method of distributing a group of things into equal parts. It is one of the four basic operations of arithmetic, which gives a fair result of sharing.")
+        delay(1000) // Pausing for 2000 ms
+        furhat.say("I'll give you an example: Imagine there are are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?")
+        delay(3000)
+        furhat.ask("The question is: what is 12 chocolates divided by 3 friends? The answer is: They get 4 each. So 12 divided by 3 is 4.Do you understand this?")
     }
 
     onResponse<Yes> {
@@ -132,9 +132,9 @@ val Explanation3 : State = state(Interaction) {
 
 val Example2 : State = state(Interaction) {
     onEntry {
-        furhat.say("Imagine that we have a total of 10 students, and we want to divide them into 2 classrooms. How many people will there be in each class room? So, what is 10 divided by 2?"
-                +delay(3000)
-                + "The answer is 5. If we divide 10 students by 2 classrooms, each classroom will have 5 students.")
+        furhat.say("Imagine that we have a total of 10 students, and we want to divide them into 2 classrooms. How many people will there be in each class room? So, what is 10 divided by 2?")
+                delay(3000)
+        furhat.say("The answer is 5. If we divide 10 students by 2 classrooms, each classroom will have 5 students.")
 
         random(furhat.ask("Do you understand how division works?"),
                 furhat.ask("Do you see what I mean?"),
@@ -168,9 +168,9 @@ val UserUnderstands : State = state(Interaction) {
 
 val Example3 : State = state(Interaction) {
     onEntry {
-        furhat.ask("What is 24 divided by 4?"
-                +delay(3000)
-                +"The question here is: how can we equally divide 24 into 4 groups? The answer is 6. 24 divided by 4 is 6.")
+        furhat.say("What is 24 divided by 4?")
+        delay(3000)
+        furhat.say("The question here is: how can we equally divide 24 into 4 groups? The answer is 6. 24 divided by 4 is 6.")
 
         goto(ReadyForExercises)
     }
