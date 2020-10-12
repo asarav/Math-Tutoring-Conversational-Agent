@@ -21,3 +21,13 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+Aff-Wild-models/.idea/
+
+Aff-Wild-models/venv/
+
+Aff-Wild-models/__pycache__/
+
+Aff-Wild-models/affwildnet/__pycache__/
+
+Aff-Wild-models/vggface/__pycache__/
