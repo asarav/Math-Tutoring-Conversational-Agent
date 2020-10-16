@@ -2,12 +2,15 @@ package furhatos.app.mathtutor.flow
 
 import furhatos.app.mathtutor.nlu.*
 import furhatos.app.mathtutor.userData
+import furhatos.autobehavior.userSpeechStartGesture
 import furhatos.flow.kotlin.*
+import furhatos.gestures.Gestures
 import furhatos.nlu.common.*
 
 val Start : State = state(Interaction) {
     onEntry {
         furhat.ask("Hello! How are you doing? What is your name?")
+        furhat.userSpeechStartGesture = listOf(Gestures.Thoughtful, Gestures.Nod, Gestures.Smile)
     }
 
     onResponse<Name> {
