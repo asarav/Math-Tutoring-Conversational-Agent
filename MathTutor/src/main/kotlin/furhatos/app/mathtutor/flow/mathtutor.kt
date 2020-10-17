@@ -6,6 +6,7 @@ import furhatos.autobehavior.userSpeechStartGesture
 import furhatos.flow.kotlin.*
 import furhatos.gestures.Gestures
 import furhatos.nlu.common.*
+import furhatos.nlu.common.Number
 
 val Start : State = state(Interaction) {
     onEntry {
@@ -55,7 +56,7 @@ val NameWrongState : State = state(Interaction) {
 val IntroductionState : State = state(Interaction) {
     onEntry {
         furhat.ask("Awesome " + users.current.userData.name + ", nice to meet you! " +
-        "I'm TutorBot. Today I will teach you the math skill division. First I will explain to you the concept of division and show you some examples. After the explanation and examples I will give you division problems that you can solve to practice. Don't worry if you don't understand it the first time, I will help you through the process!" +
+        "I'm TutorBot. Today I will teach you the math skill of division. First I will explain to you the concept of division and show you some examples. After the explanation and examples I will give you division problems that you can solve to practice. Don't worry if you don't understand it the first time, I will help you through the process!" +
                 "Are you ready to start " + users.current.userData.name + "?")
     }
 
@@ -72,16 +73,18 @@ val Explanation1 : State = state(Interaction) {
     onEntry {
         furhat.say("Division is a method of distributing a group of things into equal parts. It is one of the four basic operations of arithmetic, which gives a fair result of sharing.")
         delay(1000) // Pausing for 2000 ms
-        furhat.say("I'll give you an example: Imagine there are are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?")
+        furhat.say("I'll give you an example: Imagine there are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?")
         delay(3000)
-        furhat.ask("The question is: what is 12 chocolates divided by 3 friends? The answer is: They get 4 each. So 12 divided by 3 is 4.Do you understand this?")
+        furhat.ask("The question is: what is 12 chocolates divided by 3 friends? The answer is: They get 4 each. So 12 divided by 3 is 4. Do you understand this?")
     }
 
     onResponse<Yes> {
+        users.current.userData.difficulty = 2
         goto(UserUnderstandsAfterFirstExplanation)
     }
 
     onResponse<No> {
+        users.current.userData.difficulty = 1
         goto(FamiliarWithMultiplication)
     }
 }
@@ -152,6 +155,7 @@ val Example2 : State = state(Interaction) {
     onResponse<No> {
         //Dead End?
         furhat.say("Don't worry, " + users.current.userData.name + ", it is completely normal if you are struggling to understand it. Don't give up, you will get there! I will take time to explain it to you again.")
+        goto(Explanation1)
     }
 }
 
@@ -181,6 +185,72 @@ val Example3 : State = state(Interaction) {
 
 val ReadyForExercises : State = state(Interaction) {
     onEntry{
-        furhat.say("Alright! Let's jump into some exercises.")
+        furhat.say("Alright! Let's jump into some exercises. You can use pen and paper if you want. I will formulate a division exercise, you can tell me the answer when you have solved it.")
+        goto(Exercises)
+    }
+}
+
+val Exercises : State = state(Interaction) {
+    onEntry {
+        users.current.userData.answer = 0
+        if(users.current.userData.difficulty == 0) {
+            users.current.userData.answer = 5
+            furhat.ask("What is 15 divided by 3?")
+        } else if(users.current.userData.difficulty == 1) {
+            users.current.userData.answer = 9
+            furhat.ask("What is 72 divided by 8?")
+        } else {
+            users.current.userData.answer = 12
+            furhat.ask("What is 108 divided by 9?")
+        }
+    }
+
+    onResponse<Number> {
+        if(it.intent.value == users.current.userData.answer) {
+            furhat.gesture(Gestures.Nod)
+            goto(RightAnswer)
+        } else {
+            furhat.gesture(Gestures.Shake)
+            goto(WrongAnswer)
+        }
+    }
+}
+
+val RightAnswer : State = state(Interaction) {
+    onEntry {
+        furhat.say("That is correct.")
+        random({furhat.say("Well done, " + users.current.userData.name + ".") },
+                {furhat.say("You are doing great, " + users.current.userData.name + "!") })
+    }
+}
+
+val WrongAnswer : State = state(Interaction) {
+    onEntry {
+        furhat.say("That is not the correct answer, the correct answer is " + users.current.userData.answer + ".")
+        random({furhat.say("Don't worry " + users.current.userData.name + ", you will definitely get there!") })
+
+        furhat.ask("Do you want me to go over the explanation of the division concept?")
+    }
+
+    onResponse<Yes> {
+        goto(Explanation1)
+    }
+
+    onResponse<No> {
+        goto(Continuation)
+    }
+}
+
+val Continuation : State = state(Interaction) {
+    onEntry {
+        furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
+    }
+}
+
+val FinalState : State = state(Interaction) {
+    onEntry {
+        furhat.say("Alright. Thank you for your attention "+ users.current.userData.name + ". Have a nice day!")
+        delay(3000)
+        goto(Start)
     }
 }
