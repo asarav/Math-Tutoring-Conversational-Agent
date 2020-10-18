@@ -89,7 +89,4 @@ def inference(img, batch_size, sequence_length, network, pretrained_model_checkp
             pr = sess.run([prediction])
             print(f"valence: {pr[0][0][0]:.3f} arousal: {pr[0][0][1]:.3f}")
 
-            return pr
-
-if __name__ == '__main__':
-    inference("")
+            return pr[0][0][0], pr[0][0][1]

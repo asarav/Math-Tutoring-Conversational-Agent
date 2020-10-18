@@ -33,3 +33,9 @@ Aff-Wild-models/affwildnet/__pycache__/
 Aff-Wild-models/vggface/__pycache__/
 
 Aff-Wild-models/models/
+
+MathTutor/build/
+
+MathTutor/.idea/
+
+MathTutor/.gradle/
