@@ -8,6 +8,8 @@ import furhatos.gestures.Gestures
 import furhatos.nlu.common.*
 import furhatos.nlu.common.Number
 
+//Beginning of introduction section
+
 val Start : State = state(Interaction) {
     onEntry {
         furhat.ask("Hello! How are you doing? What is your name?")
@@ -68,6 +70,8 @@ val IntroductionState : State = state(Interaction) {
         propagate()
     }
 }
+
+//Beginning of explanations section
 
 val Explanation1 : State = state(Interaction) {
     onEntry {
@@ -190,6 +194,8 @@ val ReadyForExercises : State = state(Interaction) {
     }
 }
 
+//Beginning of Exercises Section
+
 val Exercises : State = state(Interaction) {
     onEntry {
         users.current.userData.answer = 0
@@ -245,12 +251,25 @@ val Continuation : State = state(Interaction) {
     onEntry {
         furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
     }
+
+    onResponse<AnotherExerciseOfSameLevel> {
+        goto(Exercises)
+    }
+
+    onResponse<ExerciseOfMoreAdvancedLevel> {
+        users.current.userData.difficulty = users.current.userData.difficulty + 1
+        goto(Exercises)
+    }
+
+    onResponse<DoneWithExercises> {
+        goto(FinalState)
+    }
 }
 
 val FinalState : State = state(Interaction) {
     onEntry {
         furhat.say("Alright. Thank you for your attention "+ users.current.userData.name + ". Have a nice day!")
-        delay(3000)
+        delay(5000)
         goto(Start)
     }
 }
