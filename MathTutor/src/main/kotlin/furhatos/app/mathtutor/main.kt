@@ -4,7 +4,7 @@ import furhatos.app.mathtutor.flow.Idle
 import furhatos.skills.Skill
 import furhatos.flow.kotlin.*
 
-class FruitsellerSkill : Skill() {
+class MathTutorSkill : Skill() {
     override fun start() {
         Flow().run(Idle)
     }
