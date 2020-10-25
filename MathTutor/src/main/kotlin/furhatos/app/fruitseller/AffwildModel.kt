@@ -14,7 +14,7 @@ class AffwildModel {
          * Returns the outputs of the Affwild model as a list of pairs where the first value in the pair is the valence and the second is the arousal.
          * The list is sorted from old to new.
          */
-        fun getOutputs(): List<Pair<Float, Float>> {
+        private fun getOutputs(): List<Pair<Float, Float>> {
             val url = URL("http://localhost:5000/predictions")
             try {
                 with(url.openConnection() as HttpURLConnection) {
@@ -41,6 +41,29 @@ class AffwildModel {
                 System.err.println("Warning! Could not get results from the Affwild model! Is the server running?")
                 return emptyList()
             }
+        }
+
+        fun valenceArousalToFrustration(valence: Float, arousal: Float): Int {
+            return (-1.5*valence*(arousal*0.5+0.5)+1.5).toInt();
+        }
+
+        /**
+         * Returns the maximum frustration that has been meassured by the model since the last update.
+         * Frustration level can be 0, 1 or 2 where 0 is happy, 1 is neutral and 2 is frustrated.
+         */
+        fun updateAndGetFrustration(): Int {
+
+            val values = getOutputs()
+
+            var maximumFrustration = 0
+            for (value in values) {
+                val frustration = valenceArousalToFrustration(value.first, value.second)
+                if (frustration > maximumFrustration) {
+                    maximumFrustration = frustration
+                }
+            }
+
+            return maximumFrustration
 
         }
     }

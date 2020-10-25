@@ -12,6 +12,5 @@ class FruitsellerSkill : Skill() {
 }
 
 fun main(args: Array<String>) {
-    AffwildModel.getOutputs()
     Skill.main(args)
 }
