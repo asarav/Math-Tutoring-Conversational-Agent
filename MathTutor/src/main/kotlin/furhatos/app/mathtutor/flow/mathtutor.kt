@@ -336,7 +336,7 @@ val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
     }
 }
 
-val FrustratonLowIntelligenceMoreExplanation: State = state(Interaction) {
+val c: State = state(Interaction) {
     onEntry {
         furhat.say("${furhat.voice.emphasis("Don't worry " + users.current.userData.name)}")
         furhat.say("I'll guide you through it!")
@@ -352,6 +352,59 @@ val FrustratonLowIntelligenceMoreExplanation: State = state(Interaction) {
     onResponse<No> {
         furhat.say("Okay, I understand! I will give you some more exercises to understand the concept.")
         goto(Exercises)
+    }
+}
+
+val FrustratonHighIntelligence : State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
+        furhat.gesture(Gestures.Wink)
+        furhat.say("You are already quite familiar with the concept of division.")
+        delay(500)
+        furhat.ask("Do you prefer another exercise?")
+        furhat.gesture(Gestures.BigSmile)
+    }
+
+    onResponse<Yes> {
+        goto(Exercises)
+    }
+
+    onResponse<No> {
+        furhat.say("I understand.")
+        goto(FrustrationRiddleQuestion)
+    }
+}
+
+val FrustrationRiddleQuestion: State = state(Interaction) {
+    onEntry {
+        furhat.say("I do have a special riddle for you. This riddle is related to division.")
+        furhat.ask("Do you like to solve that?")
+    }
+
+    onResponse<Yes> {
+        furhat.gesture(Gestures.Surprise)
+        furhat.say("Awesome!")
+        goto(FrustrationRiddle)
+    }
+
+    onResponse<No> {
+        goto(FinalState)
+    }
+}
+
+val FrustrationRiddle: State = state(Interaction) {
+    onEntry {
+        furhat.say("So the riddle is like this:")
+        delay(1000)
+        furhat.ask("How do you make the number seven ${furhat.voice.emphasis("even")} ${furhat.voice.pause("300")} without substraction, multiplication or division?")
+    }
+
+    onResponse<Yes> {
+        //FINISH
+    }
+
+    onResponse<No> {
+        //FINISH
     }
 }
 
