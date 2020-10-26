@@ -20,7 +20,10 @@ val Start : State = state(Interaction) {
     onResponse<Name> {
         if (it.intent.name != null) {
             users.current.userData.name = it.intent.name
-            goto(NameState)
+
+            goto(FrustrationLowIntelligenceEncouragement)
+            users.current.userData.nextState = NameState
+            //goto(NameState)
         } else {
             propagate()
         }
@@ -316,6 +319,39 @@ val Continuation : State = state(Interaction) {
 
     onResponse<DoneWithExercises> {
         goto(FinalState)
+    }
+}
+
+/**
+ * START - 'Frustration based states'
+ */
+val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("Don't give up " + users.current.userData.name)}")
+        furhat.gesture(Gestures.BigSmile)
+        delay(500)
+        furhat.say("I'm ${furhat.voice.emphasis("sure")} you will learn it!")
+        delay(1000)
+        goto(users.current.userData.nextState)
+    }
+}
+
+val FrustratonLowIntelligenceMoreExplanation: State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("Don't worry " + users.current.userData.name)}")
+        furhat.say("I'll guide you through it!")
+        furhat.gesture(Gestures.BigSmile)
+        delay(500)
+        furhat.ask("Do you prefer some extra explanation?")
+    }
+
+    onResponse<Yes> {
+        goto(Explanation3)
+    }
+
+    onResponse<No> {
+        furhat.say("Okay, I understand! I will give you some more exercises to understand the concept.")
+        goto(Exercises)
     }
 }
 
