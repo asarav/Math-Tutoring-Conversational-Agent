@@ -94,12 +94,16 @@ val Explanation1 : State = state(Interaction) {
     }
 
     onResponse<Yes> {
-        users.current.userData.difficulty = 2
+        if (users.current.userData.numberOfExplanations == 1) {
+            users.current.userData.difficulty = 2
+        }
         goto(UserUnderstandsAfterFirstExplanation)
     }
 
     onResponse<No> {
-        users.current.userData.difficulty = 1
+        if (users.current.userData.numberOfExplanations == 1) {
+            users.current.userData.difficulty = 1
+        }
         goto(FamiliarWithMultiplication)
     }
 }
@@ -107,7 +111,12 @@ val Explanation1 : State = state(Interaction) {
 val UserUnderstandsAfterFirstExplanation : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
-        furhat.ask("Great! You're a fast learner, "+ users.current.userData.name + ". Do you want me to show you another example?")
+        if (users.current.userData.numberOfExplanations == 1) {
+            furhat.ask("Great! You're a fast learner, " + users.current.userData.name + ". Do you want me to show you another example?")
+        }
+        else {
+            furhat.ask("That is great, " + users.current.userData.name + ". Do you want me to show you another example?")
+        }
     }
 
     onResponse<Yes> {
@@ -172,11 +181,13 @@ val Example2 : State = state(Interaction) {
     }
 
     onResponse<Yes> {
+        users.current.userData.frustration = 0
         goto(UserUnderstands)
     }
 
     onResponse<No> {
         //Dead End?
+        users.current.userData.frustration = 2
         furhat.say("Don't worry, " + users.current.userData.name + ", it is completely normal if you are struggling to understand it. Don't give up, you will get there! I will take time to explain it to you again.")
         goto(Explanation1)
     }
@@ -249,6 +260,15 @@ val RightAnswer : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.rightAnswers++
+
+        if (users.current.userData.frustration >= 1) {
+            users.current.userData.frustration--
+        }
+        else if (users.current.userData.numberOfExplanations == 1 && users.current.userData.rightAnswers > 1 &&
+                users.current.userData.wrongAnswers == 0 && users.current.userData.frustration < 2) {
+            users.current.userData.frustration++
+        }
+
         furhat.say("That is correct.")
         random({furhat.say("Well done, " + users.current.userData.name + ".") },
                 {furhat.say("You are doing great, " + users.current.userData.name + "!") })
@@ -259,6 +279,11 @@ val WrongAnswer : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.wrongAnswers++
+
+        if (users.current.userData.frustration < 2) {
+            users.current.userData.frustration++
+        }
+
         furhat.say("That is not the correct answer, the correct answer is " + users.current.userData.answer + ".")
         random({furhat.say("Don't worry " + users.current.userData.name + ", you will definitely get there!") })
 
@@ -285,7 +310,7 @@ val Continuation : State = state(Interaction) {
     }
 
     onResponse<ExerciseOfMoreAdvancedLevel> {
-        users.current.userData.difficulty = users.current.userData.difficulty + 1
+        users.current.userData.difficulty++
         goto(Exercises)
     }
 
