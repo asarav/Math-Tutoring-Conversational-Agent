@@ -336,7 +336,7 @@ val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
     }
 }
 
-val c: State = state(Interaction) {
+val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
     onEntry {
         furhat.say("${furhat.voice.emphasis("Don't worry " + users.current.userData.name)}")
         furhat.say("I'll guide you through it!")
