@@ -308,12 +308,26 @@ val Continuation : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.currentExercise = (0..easyExercises.size).random()
-        furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
+        if(users.current.userData.difficulty == 0) {
+            furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
+        }
+        else if(users.current.userData.difficulty == 1) {
+            furhat.ask("Would you like to try another exercise of the same level, something easier, or something more advanced? If you're done practicing, please tell me.")
+        }
+        else {
+            furhat.ask("Would you like to try another exercise of the same level, or something easier? If you're done practicing, please tell me.")
+        }
     }
 
     onResponse<AnotherExerciseOfSameLevel> {
         goto(Exercises)
     }
+
+    onResponse<AnotherExerciseOfEasierLevel> {
+        users.current.userData.difficulty--
+        goto(Exercises)
+    }
+
 
     onResponse<ExerciseOfMoreAdvancedLevel> {
         users.current.userData.difficulty++

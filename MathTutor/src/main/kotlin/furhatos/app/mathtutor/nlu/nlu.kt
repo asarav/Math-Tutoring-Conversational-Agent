@@ -22,6 +22,13 @@ class ExerciseOfMoreAdvancedLevel() : ComplexEnumEntity() {
     }
 }
 
+
+class AnotherExerciseOfEasierLevel() : ComplexEnumEntity() {
+    override fun getEnum(lang: Language): List<String> {
+        return listOf("I want another exercise of an easier level", "easier", "something easier", "easier level", "I want another easier exercise", "easier exercise")
+    }
+}
+
 class DoneWithExercises() : ComplexEnumEntity() {
     override fun getEnum(lang: Language): List<String> {
         return listOf("I'm done practicing", "I want to quit", "I'm done", "I am done practicing", "I am done", "done", "quit", "done practicing")
