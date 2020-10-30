@@ -228,20 +228,25 @@ val ReadyForExercises : State = state(Interaction) {
 }
 
 //Beginning of Exercises Section
+val easyExercises : List<Pair<Int, Int>> = listOf(Pair(15, 3), Pair(14, 2), Pair(8, 2), Pair(8, 2), Pair(9, 3), Pair(12, 6), Pair(6, 3), Pair(8, 4), Pair(10, 5), Pair(6, 2), Pair(15, 5))
+val mediumExercises : List<Pair<Int, Int>> = listOf(Pair(72, 8), Pair(24, 6), Pair(32, 8), Pair(55, 5), Pair(42, 7), Pair(56, 8), Pair(36, 6), Pair(81, 9), Pair(63, 7), Pair(54, 9), Pair(40, 5))
+val hardExercises : List<Pair<Int, Int>> = listOf(Pair(112, 8), Pair(108, 9), Pair(90, 6), Pair(117, 9), Pair(78, 6), Pair(112, 7), Pair(64, 4), Pair(91, 7), Pair(10, 5), Pair(6, 2), Pair(15, 5))
 
 val Exercises : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.answer = 0
+        val exercise = users.current.userData.currentExercise
+
         if(users.current.userData.difficulty == 0) {
-            users.current.userData.answer = 5
-            furhat.ask("What is 15 divided by 3?")
+            users.current.userData.answer = easyExercises[exercise].first / easyExercises[exercise].second
+            furhat.ask("What is " + easyExercises[exercise].first + " divided by " + easyExercises[exercise].second + "?")
         } else if(users.current.userData.difficulty == 1) {
-            users.current.userData.answer = 9
-            furhat.ask("What is 72 divided by 8?")
+            users.current.userData.answer = mediumExercises[exercise].first / mediumExercises[exercise].second
+            furhat.ask("What is " + mediumExercises[exercise].first + " divided by " + mediumExercises[exercise].second + "?")
         } else {
-            users.current.userData.answer = 12
-            furhat.ask("What is 108 divided by 9?")
+            users.current.userData.answer = hardExercises[exercise].first /hardExercises[exercise].second
+            furhat.ask("What is " + hardExercises[exercise].first + " divided by " + hardExercises[exercise].second + "?")
         }
     }
 
@@ -302,6 +307,7 @@ val WrongAnswer : State = state(Interaction) {
 val Continuation : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+        users.current.userData.currentExercise = (0..easyExercises.size).random()
         furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
     }
 
