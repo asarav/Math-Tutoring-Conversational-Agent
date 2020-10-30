@@ -4,8 +4,10 @@ from __future__ import print_function
 
 import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.FATAL)
+from matplotlib import pyplot as plt
 
 slim = tf.contrib.slim
+import numpy as np
 
 # Create FLAGS
 
@@ -18,15 +20,12 @@ slim = tf.contrib.slim
 
 init_fn = None
 
-def inference(img, batch_size, sequence_length, network, pretrained_model_checkpoint_path, size=96,):
+def inference(images, batch_size, sequence_length, network, pretrained_model_checkpoint_path, outputs, size=96, ):
     g = tf.Graph()
 
     with g.as_default():
-        images = tf.convert_to_tensor(img)
-
-        # Makes an input queue
-        # input_queue = tf.train.slice_input_producer([images], num_epochs=None, shuffle=False, seed=None,
-        #                                             capacity=1000, shared_name=None, name=None)
+        images = np.array(images)
+        images = tf.convert_to_tensor(images)
 
         images_batch = tf.image.resize_images(images, tf.convert_to_tensor([size, size]))
 
@@ -87,6 +86,10 @@ def inference(img, batch_size, sequence_length, network, pretrained_model_checkp
 
             init_fn(sess)
             pr = sess.run([prediction])
-            print(f"valence: {pr[0][0][0]:.3f} arousal: {pr[0][0][1]:.3f}")
+            print(f"valence: {pr[0][len(pr[0])-1][0]:.3f} arousal: {pr[0][len(pr[0])-1][1]:.3f}")
 
-            return pr[0][0][0], pr[0][0][1]
+            plt.plot(np.reshape(pr, (-1, 2)))
+            plt.show()
+
+            outputs.append((pr[0][len(pr[0])-1][0], pr[0][len(pr[0])-1][1]))
+

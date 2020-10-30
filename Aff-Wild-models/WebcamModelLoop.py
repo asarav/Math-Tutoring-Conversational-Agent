@@ -1,8 +1,11 @@
 import math
+from threading import Thread
+from typing import Optional
 
 import cv2
 import numpy as np
 from inference_script import inference
+from matplotlib import pyplot as plt
 
 
 import tensorflow as tf
@@ -57,6 +60,8 @@ class WebcamModelLoop:
         w = 200
         h = 200
 
+        images = []
+        t: Optional[Thread] = None
         while True:
             ret: [bool, np.ndarray] = self.cam.read()
             s, img = ret
@@ -80,8 +85,8 @@ class WebcamModelLoop:
                     w = round(smoothing * w + (1 - smoothing) * new_w)
                     h = round(smoothing * h + (1 - smoothing) * new_h)
 
-                    side_border = int(96*2 - w)
-                    top_border = int(96*2 - h)
+                    side_border = int(120 - w)
+                    top_border = int(120 - h)
 
                     left = x - side_border // 2
                     right = x + w + math.ceil(side_border / 2)
@@ -108,7 +113,15 @@ class WebcamModelLoop:
                 cv2.waitKey(1)
 
                 if len(faces) > 0:
-                    output = inference(cropped_img, FLAGS.batch_size, FLAGS.sequence_length, FLAGS.network,
-                              self.pretrained_model_checkpoint_path, 96)
+                    images.append(cropped_img)
 
-                    self.outputs.append((f"{output[0]}", f"{output[1]}"))
+                    sequence_lenght = 80
+
+                    while len(images) > sequence_lenght:
+                        images.pop(0)
+
+                    if len(images) == sequence_lenght and (t is None or not t.is_alive()):
+                        t = Thread(target=inference, args=(images, FLAGS.batch_size, sequence_lenght, FLAGS.network,
+                                           self.pretrained_model_checkpoint_path, self.outputs, 96))
+                        t.start()
+                        images = []
