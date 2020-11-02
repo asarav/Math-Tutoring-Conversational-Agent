@@ -20,10 +20,8 @@ val Start : State = state(Interaction) {
     onResponse<Name> {
         if (it.intent.name != null) {
             users.current.userData.name = it.intent.name
-
-            goto(FrustrationLowIntelligenceEncouragement)
-            users.current.userData.nextState = NameState
-            //goto(NameState)
+            
+            goto(NameState)
         } else {
             propagate()
         }
@@ -358,7 +356,7 @@ val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
 val FrustratonHighIntelligence : State = state(Interaction) {
     onEntry {
         furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
-        furhat.gesture(Gestures.Wink)
+        furhat.gesture(Gestures.Nod)
         furhat.say("You are already quite familiar with the concept of division.")
         delay(500)
         furhat.ask("Do you prefer another exercise?")
@@ -383,7 +381,9 @@ val FrustrationRiddleQuestion: State = state(Interaction) {
 
     onResponse<Yes> {
         furhat.gesture(Gestures.Surprise)
+        furhat.voice.pitch = "high"
         furhat.say("Awesome!")
+        furhat.voice.pitch = "medium"
         goto(FrustrationRiddle)
     }
 
@@ -395,8 +395,7 @@ val FrustrationRiddleQuestion: State = state(Interaction) {
 val FrustrationRiddle: State = state(Interaction) {
     onEntry {
         furhat.say("So the riddle is like this:")
-        delay(1000)
-        furhat.ask("How do you make the number seven ${furhat.voice.emphasis("even")} ${furhat.voice.pause("300")} without substraction, multiplication or division?")
+        furhat.ask("How do you make the number seven even ${furhat.voice.pause("200ms")} without substraction, multiplication or division?")
     }
 
     onResponse<Yes> {
