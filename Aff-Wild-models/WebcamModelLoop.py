@@ -115,13 +115,11 @@ class WebcamModelLoop:
                 if len(faces) > 0:
                     images.append(cropped_img)
 
-                    sequence_lenght = 80
-
-                    while len(images) > sequence_lenght:
+                    while len(images) > FLAGS.sequence_length:
                         images.pop(0)
 
-                    if len(images) == sequence_lenght and (t is None or not t.is_alive()):
-                        t = Thread(target=inference, args=(images, FLAGS.batch_size, sequence_lenght, FLAGS.network,
+                    if len(images) == FLAGS.sequence_length and (t is None or not t.is_alive()):
+                        t = Thread(target=inference, args=(images, FLAGS.batch_size, FLAGS.sequence_length, FLAGS.network,
                                            self.pretrained_model_checkpoint_path, self.outputs, 96))
                         t.start()
                         images = []
