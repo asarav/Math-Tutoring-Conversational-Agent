@@ -34,3 +34,9 @@ class DoneWithExercises() : ComplexEnumEntity() {
         return listOf("I'm done practicing", "I want to quit", "I'm done", "I am done practicing", "I am done", "done", "quit", "done practicing")
     }
 }
+
+class RiddleAnswer() : ComplexEnumEntity() {
+    override fun getEnum(lang: Language): List<String> {
+        return listOf("Get rid of the S", "Remove the S", "Substract the S", "Seven without S", "drop S", "no S", "drop", "get rid of")
+    }
+}
