@@ -20,8 +20,7 @@ val Start : State = state(Interaction) {
     onResponse<Name> {
         if (it.intent.name != null) {
             users.current.userData.name = it.intent.name
-            //goto(NameState)
-            goto(FrustratonHighIntelligence)
+            goto(NameState)
         } else {
             propagate()
         }
