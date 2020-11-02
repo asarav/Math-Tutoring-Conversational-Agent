@@ -1,7 +1,9 @@
 package furhatos.app.mathtutor
 
 import furhatos.app.fruitseller.AffwildModel
+import furhatos.app.mathtutor.flow.Start
 import furhatos.records.User
+import furhatos.flow.kotlin.*
 
 class UserData(
         var name : String = "",
@@ -12,6 +14,7 @@ class UserData(
         var rightAnswers : Int = 0,
         var wrongAnswers : Int = 0,
         var numberOfExplanations : Int = 0,
+        var nextState: State = Start,
         var currentExercise : Int = 0
 
 ) {

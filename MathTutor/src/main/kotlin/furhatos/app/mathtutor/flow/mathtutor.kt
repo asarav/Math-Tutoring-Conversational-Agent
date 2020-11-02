@@ -277,6 +277,22 @@ val RightAnswer : State = state(Interaction) {
         furhat.say("That is correct.")
         random({furhat.say("Well done, " + users.current.userData.name + ".") },
                 {furhat.say("You are doing great, " + users.current.userData.name + "!") })
+
+        // If student is frustrated
+        if (users.current.userData.getCombinedFrustration() >= 2) {
+            val intelligence = users.current.userData.difficulty
+
+            if (intelligence == 1) { // Medium intelligence
+                random({furhat.say("You're a natural!")}, {furhat.say("You're a quick learner!")})
+                furhat.gesture(Gestures.BigSmile)
+            } else if (intelligence == 2){ // High intelligence
+                goto(FrustratonHighIntelligence)
+            } else {
+                goto(Continuation)
+            }
+        } else {
+            goto(Continuation)
+        }
     }
 }
 
@@ -292,7 +308,26 @@ val WrongAnswer : State = state(Interaction) {
         furhat.say("That is not the correct answer, the correct answer is " + users.current.userData.answer + ".")
         random({furhat.say("Don't worry " + users.current.userData.name + ", you will definitely get there!") })
 
-        furhat.ask("Do you want me to go over the explanation of the division concept?")
+        // If student is frustrated
+        if (users.current.userData.getCombinedFrustration() >= 2) {
+
+            val intelligence = users.current.userData.difficulty
+
+            // Low intelligence
+            if (intelligence == 0) {
+                users.current.userData.nextState = Continuation
+                random({goto(FrustrationLowIntelligenceMoreExplanation)}, {goto(FrustrationLowIntelligenceEncouragement)})
+            } else if (intelligence == 1) { // Medium intelligence
+                random({furhat.say("It's no big deal, everyone makes mistakes!")}, {furhat.say("Making mistakes is part of learning.")})
+                furhat.gesture(Gestures.BigSmile)
+                furhat.ask("Do you want me to go over the explanation of the division concept?")
+            } else { // High intelligence
+                // Don't go back to explanation, instead just ask for another difficulty.
+                goto(Continuation)
+            }
+        } else {
+            furhat.ask("Do you want me to go over the explanation of the division concept?")
+        }
     }
 
     onResponse<Yes> {
@@ -335,6 +370,137 @@ val Continuation : State = state(Interaction) {
     }
 
     onResponse<DoneWithExercises> {
+        goto(FinalState)
+    }
+}
+
+/**
+ * START - 'Frustration based states'
+ */
+val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("Learning a new task can be very difficult " + users.current.userData.name)}")
+        furhat.gesture(Gestures.BigSmile)
+        delay(500)
+        furhat.say("Making mistakes is part of the learning process.")
+        furhat.say("I'm ${furhat.voice.emphasis("sure")} you will learn it!")
+        delay(1000)
+        goto(users.current.userData.nextState)
+    }
+}
+
+val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("I understand this is difficult for you " + users.current.userData.name)}")
+        furhat.say("But you're not alone, I'll guide you through it!")
+        furhat.say("I'm ${furhat.voice.emphasis("sure")} you will learn it!")
+        furhat.gesture(Gestures.BigSmile)
+        delay(500)
+        furhat.ask("Do you prefer some extra explanation?")
+    }
+
+    onResponse<Yes> {
+        goto(Explanation3)
+    }
+
+    onResponse<No> {
+        furhat.say("Okay, I understand! I will give you some more exercises to understand the concept.")
+        goto(Exercises)
+    }
+}
+
+val FrustratonHighIntelligence : State = state(Interaction) {
+    onEntry {
+        furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
+        furhat.gesture(Gestures.Nod)
+        furhat.say("You are already quite familiar with the concept of division.")
+        delay(500)
+        furhat.ask("Instead, do you prefer to solve a special riddle?")
+        furhat.gesture(Gestures.BigSmile)
+    }
+
+    onResponse<Yes> {
+        furhat.say("Awesome!")
+        goto(FrustrationRiddle)
+    }
+
+    onResponse<No> {
+        furhat.say("I understand. Let's go back to the exercises.")
+        goto(Continuation)
+    }
+}
+
+val FrustrationRiddle: State = state(Interaction) {
+    var reask = 0
+
+    onEntry {
+        furhat.say("So the riddle is like this:")
+        furhat.ask("How do you make the number seven even ${furhat.voice.pause("200ms")} without substraction, multiplication or division?")
+    }
+
+    onResponse<RiddleAnswer> {
+        furhat.gesture(Gestures.Nod)
+        furhat.say("That's correct.")
+        furhat.say("You're a natural. I really can't learn you anything today!")
+        delay(1000)
+        goto(FinalState)
+    }
+
+    onResponse {
+        if (reask == 0) {
+            furhat.say("I don't think that is the correct answer or I didn't understand you.")
+            furhat.say("Let me repeat myself.")
+            reask += 1 // Make sure we won't repeat for the 3rd time.
+            this.reentry()
+        } else {
+            furhat.say("I don't think that is the correct answer or I didn't understand you properly.")
+            goto(FrustrationRiddleHint)
+        }
+    }
+
+    onNoResponse {
+        if (reask == 0) {
+            reask += 1
+            furhat.say("Let me repeat myself.")
+            this.reentry()
+        } else {
+            furhat.say("It's not the easiest riddle!")
+            goto(FrustrationRiddleHint)
+        }
+    }
+}
+
+val FrustrationRiddleHint: State = state(Interaction) {
+    onEntry {
+        furhat.say("Let me give you a hint.")
+        furhat.say("Focus on the word seven!")
+        delay(1000)
+        furhat.ask("What is the answer?")
+    }
+
+    onResponse<RiddleAnswer> {
+        furhat.gesture(Gestures.Nod)
+        furhat.say("That's correct.")
+        furhat.say("You're a natural. I really can't learn you anything today!")
+        delay(1000)
+        goto(FinalState)
+    }
+
+    onResponse {
+        furhat.say("Maybe this riddle was a bit mean.")
+        furhat.say("The answer is: drop the S")
+        furhat.gesture(Gestures.BigSmile)
+        delay(1000)
+        furhat.say("I still think you're a great learner though!")
+        goto(FinalState)
+    }
+
+    onNoResponse {
+        furhat.say("Maybe this riddle was a bit mean.")
+        furhat.say("The answer is: drop the S")
+        furhat.gesture(Gestures.BigSmile)
+        delay(1000)
+        furhat.say("I still think you're a great learner though!")
         goto(FinalState)
     }
 }
