@@ -285,6 +285,8 @@ val RightAnswer : State = state(Interaction) {
             if (intelligence == 1) { // Medium intelligence
                 random({furhat.say("You're a natural!")}, {furhat.say("You're a quick learner!")})
                 furhat.gesture(Gestures.BigSmile)
+                delay(1000)
+                goto(Continuation)
             } else if (intelligence == 2){ // High intelligence
                 goto(FrustratonHighIntelligence)
             } else {
@@ -413,7 +415,7 @@ val FrustratonHighIntelligence : State = state(Interaction) {
     onEntry {
         furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
         furhat.gesture(Gestures.Nod)
-        furhat.say("You are already quite familiar with the concept of division.")
+        furhat.say("I see this is quite easy for you.")
         delay(500)
         furhat.ask("Instead, do you prefer to solve a special riddle?")
         furhat.gesture(Gestures.BigSmile)
