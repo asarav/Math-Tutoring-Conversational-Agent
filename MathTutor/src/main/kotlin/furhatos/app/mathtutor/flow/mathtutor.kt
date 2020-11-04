@@ -104,7 +104,7 @@ val IntroductionState : State = state(Interaction) {
                 " right answers: " + users.current.userData.rightAnswers)
 
         furhat.ask("Awesome " + users.current.userData.name + ", nice to meet you! " +
-        "I'm TutorBot. Today I will teach you the math skill of division. First I will explain to you the concept of division and show you some examples. After the explanation and examples I will give you division problems that you can solve to practice. Don't worry if you don't understand it the first time, I will help you through the process!" +
+        "I'm TutorBot. Today I will teach you the math skill of division. First I will explain to you the concept of division and show you some examples. After the explanation and examples I will give you division problems that you can solve to practice. Don't worry if you don't understand it the first time, I will help you through the process! " +
                 "Are you ready to start " + users.current.userData.name + "?")
     }
 
@@ -135,7 +135,7 @@ val Explanation1 : State = state(Interaction) {
         furhat.say("Division is a method of distributing a group of things into equal parts. It is one of the four basic operations of arithmetic, which gives a fair result of sharing.")
         delay(1000) // Pausing for 2000 ms
         furhat.say("I'll give you an example: Imagine there are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?")
-        delay(3000)
+        delay(4000)
         furhat.ask("The question is: what is 12 chocolates divided by 3 friends? The answer is: They get 4 each. So 12 divided by 3 is 4. Do you understand this?")
     }
 
@@ -261,7 +261,7 @@ val Example2 : State = state(Interaction) {
                 " right answers: " + users.current.userData.rightAnswers)
 
         furhat.say("Imagine that we have a total of 10 students, and we want to divide them into 2 classrooms. How many people will there be in each class room? So, what is 10 divided by 2?")
-                delay(3000)
+                delay(4000)
         furhat.say("The answer is 5. If we divide 10 students by 2 classrooms, each classroom will have 5 students.")
 
         random(furhat.ask("Do you understand how division works?"),
@@ -320,7 +320,7 @@ val Example3 : State = state(Interaction) {
                 " right answers: " + users.current.userData.rightAnswers)
 
         furhat.say("What is 24 divided by 4?")
-        delay(3000)
+        delay(4000)
         furhat.say("The question here is: how can we equally divide 24 into 4 groups? The answer is 6. 24 divided by 4 is 6.")
 
         goto(ReadyForExercises)
@@ -419,6 +419,8 @@ val RightAnswer : State = state(Interaction) {
             if (intelligence == 1) { // Medium intelligence
                 random({furhat.say("You're a natural!")}, {furhat.say("You're a quick learner!")})
                 furhat.gesture(Gestures.BigSmile)
+                delay(1000)
+                goto(Continuation)
             } else if (intelligence == 2){ // High intelligence
                 goto(FrustratonHighIntelligence)
             } else {
@@ -590,7 +592,7 @@ val FrustratonHighIntelligence : State = state(Interaction) {
 
         furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
         furhat.gesture(Gestures.Nod)
-        furhat.say("You are already quite familiar with the concept of division.")
+        furhat.say("I see this is quite easy for you.")
         delay(500)
         furhat.ask("Instead, do you prefer to solve a special riddle?")
         furhat.gesture(Gestures.BigSmile)
