@@ -12,3 +12,5 @@ Use `pip install -r requirements.txt` This should install all the needed require
 If you need to specify a specif webcam this can be done on line 33 in `WebcamModelLoop.py` by changing the number.
 
 If the model runs too slow you can try to run with `--sequence_length=60 ` to change the sequence length to 60 (its 80 by default)
+
+If you need to enlarge the cropped version of face use `--image_size=200` to change the image size to 200x200 (default is 120)

@@ -5,7 +5,6 @@ from typing import Optional
 import cv2
 import numpy as np
 from inference_script import inference
-from matplotlib import pyplot as plt
 
 
 import tensorflow as tf
@@ -17,12 +16,14 @@ tf.app.flags.DEFINE_integer('batch_size', 1, '''The batch size to use.''')
 tf.app.flags.DEFINE_integer('sequence_length', 1,
                             'the sequence length: how many consecutive frames to use for the RNN; if the network is only CNN then put here any number you want : total_batch_size = batch_size * seq_length')
 
-# tf.app.flags.DEFINE_integer('size', 96, 'dimensions of input images, e.g. 96x96')
+tf.app.flags.DEFINE_integer('image_size', 120, 'dimensions of cropped webcam images, e.g. 96x96')
 
 tf.app.flags.DEFINE_string('network', 'affwildnet_vggface',
                            ' which network architecture we want to use,  pick between : vggface_4096, vggface_2000, affwildnet_vggface, affwildnet_resnet ')
 
 tf.logging.set_verbosity(tf.logging.FATAL)
+
+
 
 
 class WebcamModelLoop:
@@ -85,8 +86,8 @@ class WebcamModelLoop:
                     w = round(smoothing * w + (1 - smoothing) * new_w)
                     h = round(smoothing * h + (1 - smoothing) * new_h)
 
-                    side_border = int(120 - w)
-                    top_border = int(120 - h)
+                    side_border = int(FLAGS.image_size - w)
+                    top_border = int(FLAGS.image_size - h)
 
                     left = x - side_border // 2
                     right = x + w + math.ceil(side_border / 2)
@@ -97,16 +98,21 @@ class WebcamModelLoop:
                         right -= left
                         left = 0
                     elif right >= img.shape[1]:
-                        left -= right - img.shape[1] - 1
+                        left -= right - img.shape[1] + 1
                         right = img.shape[1] - 1
-                        print(left,  right - img.shape[1])
 
                     if top < 0:
                         bottom -= top
                         top = 0
                     elif bottom >= img.shape[0]:
-                        top += bottom - img.shape[1] - 1
+                        top -= bottom - img.shape[0] + 1
                         bottom = img.shape[0] - 1
+
+                    if bottom - top != FLAGS.image_size:
+                        print("top", top, "bottom", bottom, "-", bottom - top, "shape", img.shape[1] - 1)
+
+                    if right - left != FLAGS.image_size:
+                        print("left", left, "right", right, "-", right - left)
 
                 cropped_img = img[top:bottom, left:right]
                 cv2.imshow("Webcam", cropped_img)

@@ -4,7 +4,6 @@ from __future__ import print_function
 
 import tensorflow as tf
 tf.logging.set_verbosity(tf.logging.FATAL)
-from matplotlib import pyplot as plt
 
 slim = tf.contrib.slim
 import numpy as np
