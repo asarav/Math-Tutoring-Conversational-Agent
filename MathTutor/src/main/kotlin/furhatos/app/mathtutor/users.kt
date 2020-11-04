@@ -4,10 +4,13 @@ import furhatos.app.fruitseller.AffwildModel
 import furhatos.app.mathtutor.flow.Start
 import furhatos.records.User
 import furhatos.flow.kotlin.*
+import kotlin.math.max
 
 class UserData(
         var name : String = "",
         var frustration : Int = 0,
+        var modelFrustration : Double = 0.0,
+        var combinedFrustration : Double = 0.0,
         var difficulty : Int = 0,
         var answer : Int = 0,
         var totalStates : Int = 0,
@@ -19,7 +22,9 @@ class UserData(
 
 ) {
     fun getCombinedFrustration(): Int {
-        return ((frustration + AffwildModel.updateAndGetFrustration()) / 2).toInt()
+        modelFrustration = AffwildModel.updateAndGetFrustration()
+        combinedFrustration = max(frustration.toDouble(), modelFrustration))
+        return combinedFrustration.toInt()
     }
 }
 

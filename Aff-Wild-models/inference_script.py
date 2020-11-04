@@ -90,5 +90,5 @@ def inference(images, batch_size, sequence_length, network, pretrained_model_che
             # plt.plot(np.reshape(pr, (-1, 2)))
             # plt.show()
 
-            output.append((pr[0][len(pr[0])-1][0], pr[0][len(pr[0])-1][1]))
+            output.append((f"{pr[0][len(pr[0])-1][0]}", f"{pr[0][len(pr[0])-1][1]}"))
 

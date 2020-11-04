@@ -13,8 +13,18 @@ import furhatos.nlu.common.Number
 val Start : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+        
         furhat.ask("Hello! How are you doing? What is your name?")
         furhat.userSpeechStartGesture = listOf(Gestures.Thoughtful, Gestures.Nod, Gestures.Smile)
+
     }
 
     onResponse<Name> {
@@ -35,6 +45,15 @@ val Start : State = state(Interaction) {
 val NameState : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.ask("So your name is " + users.current.userData.name + ", is that correct?")
     }
 
@@ -50,6 +69,15 @@ val NameState : State = state(Interaction) {
 val NameWrongState : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.ask("I'm sorry! Could you say your name again?")
     }
 
@@ -66,6 +94,15 @@ val NameWrongState : State = state(Interaction) {
 val IntroductionState : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.ask("Awesome " + users.current.userData.name + ", nice to meet you! " +
         "I'm TutorBot. Today I will teach you the math skill of division. First I will explain to you the concept of division and show you some examples. After the explanation and examples I will give you division problems that you can solve to practice. Don't worry if you don't understand it the first time, I will help you through the process!" +
                 "Are you ready to start " + users.current.userData.name + "?")
@@ -86,6 +123,15 @@ val Explanation1 : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.numberOfExplanations++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Division is a method of distributing a group of things into equal parts. It is one of the four basic operations of arithmetic, which gives a fair result of sharing.")
         delay(1000) // Pausing for 2000 ms
         furhat.say("I'll give you an example: Imagine there are 12 chocolates, and 3 friends want to share them equally, how do they divide the chocolates?")
@@ -111,6 +157,14 @@ val Explanation1 : State = state(Interaction) {
 val UserUnderstandsAfterFirstExplanation : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
         if (users.current.userData.numberOfExplanations == 1) {
             furhat.ask("Great! You're a fast learner, " + users.current.userData.name + ". Do you want me to show you another example?")
         }
@@ -131,6 +185,15 @@ val UserUnderstandsAfterFirstExplanation : State = state(Interaction) {
 val FamiliarWithMultiplication : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.ask("That is no problem at all! We can take things slowly. I will try to explain it to you in a different way. Are you familiar with multiplication?")
     }
 
@@ -148,6 +211,15 @@ val Explanation2 : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.numberOfExplanations++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Great! Multiplication is actually the opposite of division, or we can call it the reverse of multiplication."
                 + "In multiplication, we want to know the total of groups of numbers. So if we want to know the total of 2 groups of 4, we multiply 2 by 4 which results into 8."
                 + "In division, we want to divide the total into a few groups and we want to know how many are in each group."
@@ -160,6 +232,15 @@ val Explanation3 : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.numberOfExplanations++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Alright, then I'll explain it this way: "
                 + "In division, we want to divide the total into a few equal groups and we want to know how many are in each group."
                 + " Or we can say: We want to divide the total into groups of a certain number and we want to know how many groups there are.")
@@ -170,6 +251,15 @@ val Explanation3 : State = state(Interaction) {
 val Example2 : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Imagine that we have a total of 10 students, and we want to divide them into 2 classrooms. How many people will there be in each class room? So, what is 10 divided by 2?")
                 delay(3000)
         furhat.say("The answer is 5. If we divide 10 students by 2 classrooms, each classroom will have 5 students.")
@@ -196,6 +286,15 @@ val Example2 : State = state(Interaction) {
 val UserUnderstands : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.ask("That's great! Good job, " + users.current.userData.name +". Do you want to see another example")
     }
 
@@ -211,6 +310,15 @@ val UserUnderstands : State = state(Interaction) {
 val Example3 : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("What is 24 divided by 4?")
         delay(3000)
         furhat.say("The question here is: how can we equally divide 24 into 4 groups? The answer is 6. 24 divided by 4 is 6.")
@@ -222,6 +330,15 @@ val Example3 : State = state(Interaction) {
 val ReadyForExercises : State = state(Interaction) {
     onEntry{
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Alright! Let's jump into some exercises. You can use pen and paper if you want. I will formulate a division exercise, you can tell me the answer when you have solved it.")
         goto(Exercises)
     }
@@ -237,6 +354,15 @@ val Exercises : State = state(Interaction) {
         users.current.userData.totalStates++
         users.current.userData.answer = 0
         val exercise = users.current.userData.currentExercise
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " name: " + this.thisState.name +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
 
         if(users.current.userData.difficulty == 0) {
             users.current.userData.answer = easyExercises[exercise].first / easyExercises[exercise].second
@@ -274,6 +400,14 @@ val RightAnswer : State = state(Interaction) {
             users.current.userData.frustration++
         }
 
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("That is correct.")
         random({furhat.say("Well done, " + users.current.userData.name + ".") },
                 {furhat.say("You are doing great, " + users.current.userData.name + "!") })
@@ -304,6 +438,14 @@ val WrongAnswer : State = state(Interaction) {
         if (users.current.userData.frustration < 2) {
             users.current.userData.frustration++
         }
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
 
         furhat.say("That is not the correct answer, the correct answer is " + users.current.userData.answer + ".")
         random({furhat.say("Don't worry " + users.current.userData.name + ", you will definitely get there!") })
@@ -343,6 +485,15 @@ val Continuation : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
         users.current.userData.currentExercise = (0..easyExercises.size).random()
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         if(users.current.userData.difficulty == 0) {
             furhat.ask("Would you like to try another exercise of the same level, or something more advanced? If you're done practicing, please tell me.")
         }
@@ -379,6 +530,15 @@ val Continuation : State = state(Interaction) {
  */
 val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
     onEntry {
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("${furhat.voice.emphasis("Learning a new task can be very difficult " + users.current.userData.name)}")
         furhat.gesture(Gestures.BigSmile)
         delay(500)
@@ -391,6 +551,14 @@ val FrustrationLowIntelligenceEncouragement : State = state(Interaction) {
 
 val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
     onEntry {
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("${furhat.voice.emphasis("I understand this is difficult for you " + users.current.userData.name)}")
         furhat.say("But you're not alone, I'll guide you through it!")
         furhat.say("I'm ${furhat.voice.emphasis("sure")} you will learn it!")
@@ -411,6 +579,15 @@ val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
 
 val FrustratonHighIntelligence : State = state(Interaction) {
     onEntry {
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("${furhat.voice.emphasis("Great job so far " + users.current.userData.name)}")
         furhat.gesture(Gestures.Nod)
         furhat.say("You are already quite familiar with the concept of division.")
@@ -434,6 +611,15 @@ val FrustrationRiddle: State = state(Interaction) {
     var reask = 0
 
     onEntry {
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("So the riddle is like this:")
         furhat.ask("How do you make the number seven even ${furhat.voice.pause("200ms")} without substraction, multiplication or division?")
     }
@@ -472,6 +658,14 @@ val FrustrationRiddle: State = state(Interaction) {
 
 val FrustrationRiddleHint: State = state(Interaction) {
     onEntry {
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Let me give you a hint.")
         furhat.say("Focus on the word seven!")
         delay(1000)
@@ -508,6 +702,15 @@ val FrustrationRiddleHint: State = state(Interaction) {
 val FinalState : State = state(Interaction) {
     onEntry {
         users.current.userData.totalStates++
+
+        println("State: " + this.thisState.name + " - frustration: " + users.current.userData.frustration +
+                " model frustration: " + users.current.userData.modelFrustration +
+                " combined frustration: " + users.current.userData.combinedFrustration +
+                " total states: " + users.current.userData.totalStates +
+                " number explanations: " + users.current.userData.numberOfExplanations +
+                " difficulty: " + users.current.userData.difficulty +
+                " right answers: " + users.current.userData.rightAnswers)
+
         furhat.say("Alright. Thank you for your attention "+ users.current.userData.name + ". Have a nice day!")
         delay(5000)
         goto(Start)
