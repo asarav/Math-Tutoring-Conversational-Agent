@@ -221,8 +221,8 @@ val Explanation2 : State = state(Interaction) {
                 " right answers: " + users.current.userData.rightAnswers)
 
         furhat.say("Great! Multiplication is actually the opposite of division, or we can call it the reverse of multiplication."
-                + "In multiplication, we want to know the total of groups of numbers. So if we want to know the total of 2 groups of 4, we multiply 2 by 4 which results into 8."
-                + "In division, we want to divide the total into a few groups and we want to know how many are in each group."
+                + " In multiplication, we want to know the total of groups of numbers. So if we want to know the total of 2 groups of 4, we multiply 2 by 4 which results into 8."
+                + " In division, we want to divide the total into a few groups and we want to know how many are in each group."
                 + " Imagine that we want to divide 8 into 2 equal groups, we want to know how many there are in each group. So 8 divided by 2 is 4. I'll give you another example.")
         goto(Example2)
     }
