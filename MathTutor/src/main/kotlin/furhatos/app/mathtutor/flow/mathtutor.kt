@@ -574,8 +574,8 @@ val FrustrationLowIntelligenceMoreExplanation: State = state(Interaction) {
     }
 
     onResponse<No> {
-        furhat.say("Okay, I understand! I will give you some more exercises to understand the concept.")
-        goto(Exercises)
+        furhat.say("Okay, I understand! Let's continue then.")
+        goto(Continuation)
     }
 }
 
