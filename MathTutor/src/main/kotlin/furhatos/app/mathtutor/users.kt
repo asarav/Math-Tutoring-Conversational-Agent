@@ -23,7 +23,7 @@ class UserData(
 ) {
     fun getCombinedFrustration(): Int {
         modelFrustration = AffwildModel.updateAndGetFrustration()
-        combinedFrustration = max(frustration.toDouble(), modelFrustration))
+        combinedFrustration = max(frustration.toDouble(), modelFrustration)
         return combinedFrustration.toInt()
     }
 }
