@@ -115,7 +115,8 @@ class WebcamModelLoop:
                         print("left", left, "right", right, "-", right - left)
 
                 cropped_img = img[top:bottom, left:right]
-                cv2.imshow("Webcam", cropped_img)
+                cv2.rectangle(img, (left, top), (right, bottom), (255, 0, 0), 1)
+                cv2.imshow("Webcam", img)
                 cv2.waitKey(1)
 
                 if len(faces) > 0:
